@@ -144,7 +144,7 @@
                 </button>
 
                 <div x-show="accordionUser.s2" x-collapse class="mt-6 pt-6 border-t border-slate-100 dark:border-slate-800 space-y-6">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
                         <!-- Misi 1 -->
                         <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 space-y-3">
                             <div class="flex items-center justify-between">
@@ -193,6 +193,23 @@
                             </p>
                             <div class="pt-2 text-[11px] text-slate-500 dark:text-slate-400 font-medium">
                                 💡 Efek: Menutup celah ingkar janji secara sopan dan terhormat.
+                            </div>
+                        </div>
+
+                        <!-- Misi 4 / Log History & Follow Update -->
+                        <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase bg-purple-100 dark:bg-purple-950 text-purple-600 dark:text-purple-400 border border-purple-200 dark:border-purple-800">
+                                    Misi 04
+                                </span>
+                                <span class="text-[10px] font-mono text-slate-400">Adaptive AI</span>
+                            </div>
+                            <h3 class="text-sm font-bold text-slate-900 dark:text-white">Log &amp; Follow Update</h3>
+                            <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                                Catat setiap proses/tanggapan baru di tab <strong>Log History</strong>. Klik <strong>Follow Update</strong> agar AI mempelajari perkembangan terkini dan merumuskan draf komunikasi negosiasi yang memuaskan target menuju GOL.
+                            </p>
+                            <div class="pt-2 text-[11px] text-slate-500 dark:text-slate-400 font-medium">
+                                💡 Solusi: Menghilangkan rasa bingung pengguna tentang apa langkah taktis berikutnya.
                             </div>
                         </div>
                     </div>

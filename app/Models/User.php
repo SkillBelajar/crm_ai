@@ -66,4 +66,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Meeting::class);
     }
+
+    /**
+     * Get all meeting logs owned by the user.
+     */
+    public function meetingLogs(): HasMany
+    {
+        return $this->hasMany(MeetingLog::class);
+    }
 }

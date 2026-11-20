@@ -151,4 +151,111 @@ PROMPT;
             'latency_ms' => $response['latency_ms'] ?? 0,
         ];
     }
+
+    /**
+     * Menghasilkan Strategi Negosiasi Lanjutan & Draf Komunikasi Berbasis Log History Terkini (Follow Update).
+     *
+     * @return array{success: bool, content: ?string, message: string, needs_ai_settings: bool, latency_ms?: int}
+     */
+    public function generateFollowUpdateStrategy(User $user, Meeting $meeting): array
+    {
+        $setting = $user->aiSetting;
+
+        if (! $setting || empty($setting->base_url)) {
+            return [
+                'success' => false,
+                'content' => null,
+                'message' => 'Konfigurasi AI belum diatur. Silakan atur endpoint AI mandiri (BYOK) Anda di menu Pengaturan AI terlebih dahulu.',
+                'needs_ai_settings' => true,
+            ];
+        }
+
+        $contactName = $meeting->contact?->name ?? 'Lawan Bicara / Target';
+        $contactRole = $meeting->contact?->role_or_company ?? 'Klien';
+        $contactCategory = $meeting->contact?->category_label ?? 'Klien';
+        $contactPrimaryNeed = $meeting->contact?->primary_need ?? $meeting->biggest_need;
+        $contactEgoTrigger = $meeting->ego_validation_note ?: ($meeting->contact?->ego_trigger ?: 'Diakui sebagai pengambil keputusan yang cerdas & berpengaruh');
+
+        // Ambil riwayat log interaksi
+        $logs = $meeting->logs()->orderBy('logged_at', 'asc')->get();
+
+        $logHistoryText = '';
+        $latestLogText = 'Belum ada log interaksi tambahan.';
+
+        if ($logs->isNotEmpty()) {
+            $formattedLogs = [];
+            foreach ($logs as $index => $log) {
+                $time = $log->logged_at ? $log->logged_at->format('d M Y H:i') : '-';
+                $entry = ($index + 1) . ". [{$time}] Channel: {$log->channel_label} | Respons: {$log->sentiment_label}\n   Catatan: {$log->content}";
+                $formattedLogs[] = $entry;
+            }
+            $logHistoryText = implode("\n\n", $formattedLogs);
+
+            $last = $logs->last();
+            $lastTime = $last->logged_at ? $last->logged_at->format('d M Y H:i') : '-';
+            $latestLogText = "[{$lastTime}] Channel: {$last->channel_label} | Respons: {$last->sentiment_label}\nCatatan: {$last->content}";
+        } else {
+            $logHistoryText = "Belum ada catatan interaksi tersimpan. Analisis dilakukan berdasarkan kesepakatan awal pertemuan.";
+        }
+
+        $systemPrompt = <<<PROMPT
+Anda adalah Master Negosiator Eksekutif & Konsultan Psikologi Negosiasi Tingkat Tinggi pada platform MindControl CRM ("Pendengar & Pengendali").
+Tugas Anda adalah mempelajari seluruh rekam jejak (log history) interaksi yang sudah dilakukan, lalu merumuskan "STRATEGI NEGOSIASI TERBARU & PESAN KOMUNIKASI LANJUTAN (FOLLOW UPDATE)".
+
+PRINSIP WAJIB DALAM MERUMUSKAN STRATEGI:
+1. Menarik & Bernilai Tinggi (High Value & Compelling): Tawaran/pesan tidak boleh terkesan mengemis atau putus asa, melainkan menghadirkan sudut pandang segar yang menguntungkan target.
+2. Mudah Dimengerti (Simple & Crystal Clear): Tidak berbelit-belit, bahasa lugas dan komunikatif tanpa jargon rumit.
+3. Memuaskan bagi Target (Ego & Need Fulfillment): Menjawab kebutuhan terbesar target, menghargai posisinya, dan memberi mereka rasa memiliki kendali penuh (autonomy).
+4. Berorientasi pada GOL Pengguna (Goal-Driven Closure): Mengarahkan dinamika obrolan agar target bergerak secara sukarela menuju gol akhir pengguna tanpa merasa dipaksa.
+5. Panduan Taktis Tanpa Bingung: Berikan instruksi yang sangat jelas kepada pengguna tentang apa yang harus dilakukan sekarang langkah demi langkah.
+PROMPT;
+
+        $userPrompt = <<<PROMPT
+Analisis seluruh data sesi dan riwayat log berikut, lalu rumuskan strategi lanjutan (Follow Update):
+
+=== DATA PROFIL TARGET & SESI ===
+- Nama Target: {$contactName} ({$contactRole} - {$contactCategory})
+- 1 Kebutuhan Terbesar Target: {$contactPrimaryNeed}
+- Pemicu Validasi Ego Target: {$contactEgoTrigger}
+- Judul Pertemuan / Sesi: {$meeting->title}
+- GOL Utama Pengguna yang Harus Tercapai: {$meeting->user_goal}
+- Kesepakatan Awal / Kontrak: {$meeting->ai_psychological_contract}
+
+=== RIWAYAT KRONOLOGIS PROSES YANG SUDAH DILAKUKAN ===
+{$logHistoryText}
+
+=== LOG TERBARU (KONDISI TERKINI YANG WAJIB DITANGGAPI) ===
+{$latestLogText}
+
+=== INSTRUKSI FORMAT OUTPUT STRATEGI ===
+Susun rencana taktis dalam format Markdown rapi dan terstruktur:
+
+### 1. 🎯 Diagnosa Situasi & Dinamika Terkini
+(Bedah apa yang sebenarnya dirasakan/dipikirkan target berdasarkan log terbaru, dan mengapa mereka merespons demikian).
+
+### 2. 📋 Panduan Taktis Pengguna (Agar Anda Tidak Bingung)
+(Instruksi konkret langkah demi langkah yang harus dilakukan pengguna hari ini. Kapan harus menghubungi, channel apa yang dipakai, dan apa yang JANGAN dilakukan).
+
+### 3. 💬 Draf Pesan Komunikasi Negosiasi Terbaru (Siap Kirim)
+(Draf pesan WhatsApp/Email lengkap yang menarik, ramah, mudah dipahami, memuaskan ego/kebutuhan target, dan mengunci komitmen menuju GOL pengguna).
+
+### 4. 🔑 Kunci Psikologis
+(Satu paragraf singkat menjelaskan mengapa formula ini membuat target merasa puas, dihargai, dan terdorong menyepakati gol Anda).
+PROMPT;
+
+        $messages = [
+            ['role' => 'system', 'content' => $systemPrompt],
+            ['role' => 'user', 'content' => $userPrompt],
+        ];
+
+        $response = $this->aiClient->chat($setting, $messages, temperature: 0.7, maxTokens: 1200);
+
+        return [
+            'success' => $response['success'],
+            'content' => $response['reply'],
+            'message' => $response['message'],
+            'needs_ai_settings' => false,
+            'latency_ms' => $response['latency_ms'] ?? 0,
+        ];
+    }
 }

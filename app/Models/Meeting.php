@@ -7,6 +7,7 @@ use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Meeting extends Model
 {
@@ -38,6 +39,8 @@ class Meeting extends Model
         'contract_deadline_at',
         'status',
         'commitment_result',
+        'latest_ai_strategy',
+        'latest_ai_strategy_at',
     ];
 
     protected function casts(): array
@@ -45,6 +48,7 @@ class Meeting extends Model
         return [
             'meeting_date' => 'datetime',
             'contract_deadline_at' => 'datetime',
+            'latest_ai_strategy_at' => 'datetime',
         ];
     }
 
@@ -66,6 +70,11 @@ class Meeting extends Model
     public function contact(): BelongsTo
     {
         return $this->belongsTo(Contact::class);
+    }
+
+    public function logs(): HasMany
+    {
+        return $this->hasMany(MeetingLog::class)->orderBy('logged_at', 'desc');
     }
 
     public function getStatusLabelAttribute(): string
