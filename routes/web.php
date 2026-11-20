@@ -7,6 +7,7 @@ use App\Livewire\ContactIndex;
 use App\Livewire\ContactShow;
 use App\Livewire\MeetingIndex;
 use App\Livewire\MeetingWorkspace;
+use App\Livewire\UserDashboard;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -45,15 +46,8 @@ Route::middleware('auth')->group(function () {
         return redirect('/');
     })->name('logout');
 
-    // User Dashboard
-    Route::get('/dashboard', function () {
-        /** @var \App\Models\User $user */
-        $user = Auth::user();
-        if ($user->isAdmin()) {
-            return redirect()->route('admin.dashboard');
-        }
-        return view('dashboard');
-    })->name('dashboard');
+    // User Dashboard & 7-Day Tracker (Slice 7)
+    Route::get('/dashboard', UserDashboard::class)->name('dashboard');
 
     // CRM Contacts Module (Slice 5)
     Route::get('/contacts', ContactIndex::class)->name('contacts');
