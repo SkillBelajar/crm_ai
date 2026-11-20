@@ -60,7 +60,7 @@ class ContactManagementTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('Kontak CRM');
-        $response->assertSee('Versi: 0.7');
+        $response->assertSee('Versi: 0.8');
         $response->assertSee('+ Tambah Kontak');
     }
 
@@ -208,7 +208,7 @@ class ContactManagementTest extends TestCase
         $response->assertSee('CTO Megatech');
         $response->assertSee('Migrasi sistem legacy tanpa downtime operasional');
         $response->assertSee('Diakui sebagai arsitek software paling handal');
-        $response->assertSee('Versi: 0.7');
+        $response->assertSee('Versi: 0.8');
     }
 
     public function test_user_cannot_view_or_access_other_users_contact_returns_403(): void

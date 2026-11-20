@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\AdminDashboard;
 use App\Livewire\AiSettingsForm;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
@@ -60,22 +61,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/ai-settings', AiSettingsForm::class)->name('ai-settings');
 
     Route::get('/guide', function () {
-        return view('placeholders.guide');
+        return view('guide');
     })->name('guide');
 
     Route::get('/profile', function () {
         return view('placeholders.profile');
     })->name('profile');
 
-    // Admin Dashboard (Protected by EnsureUserHasRole middleware)
+    // Admin Dashboard (Protected by EnsureUserHasRole middleware - Slice 8 Livewire)
     Route::middleware('role:admin')->prefix('admin')->group(function () {
-        Route::get('/', function () {
-            $users = User::latest()->get();
-            $totalUsers = $users->count();
-            $activeUsers = $users->where('is_active', true)->count();
-            $adminUsers = $users->where('role', 'admin')->where('is_active', true)->count();
-
-            return view('admin.dashboard', compact('users', 'totalUsers', 'activeUsers', 'adminUsers'));
-        })->name('admin.dashboard');
+        Route::get('/', AdminDashboard::class)->name('admin.dashboard');
     });
 });

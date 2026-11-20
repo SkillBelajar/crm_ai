@@ -37,7 +37,7 @@ class AiSettingsAndClientTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('Pengaturan AI Mandiri (BYOK)');
-        $response->assertSee('Versi: 0.7');
+        $response->assertSee('Versi: 0.8');
         $response->assertSee('Base URL Endpoint');
         $response->assertSee('Test Koneksi AI');
         $response->assertSee('Simpan Pengaturan');

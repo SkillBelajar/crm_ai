@@ -83,7 +83,7 @@ docker compose exec app php artisan test
 - [x] **Slice 5 (v0.5):** Modul Manajemen Kontak (CRM) & Profil Psikologis (Tabel `contacts`, Isolasi Multi-Tenant per-User, Livewire 3 Debounced Real-time Search, Kategori, 1 Kebutuhan Psikologis Terbesar & Pemicu Validasi Ego).
 - [x] **Slice 6 (v0.6):** Modul Sesi 3 Misi & Active Elicitation Logger Integrasi BYOK AI (Tabel `meetings`, 3 Langkah Terpadu, Generator Opsi Conditional Yes AI, Draf Pesan Kontrak 24 Jam WhatsApp/Email, Ticker Batas Waktu 24 Jam, & Isolasi Data Multi-Tenant).
 - [x] **Slice 7 (v0.7):** Modul Dashboard & 7-Day Tracker (Livewire 3 `UserDashboard`, 4 Kartu KPI Smart Goal 7 Hari, Progress Bar Komitmen Terkunci, Daftar Prioritas 24 Jam, Aktivitas & Komitmen Terbaru, Banner Status AI Mandiri).
-- [ ] **Slice 8 (v0.8):** 24-Hour Psychological Lock & Evaluasi 7 Hari.
+- [x] **Slice 8 (v0.8):** Modul Admin SaaS & Panduan SOP Strategis (Livewire 3 `AdminDashboard`, 4 KPI Makro Seluruh Tenant, Live Search & Status Filter Akun, Toggle Suspend/Aktifkan Akun Pengguna, Proteksi Anti-Self-Suspend, Panduan Pengguna & SOP Strategis Interaktif Tab User/Admin `/guide`).
 - [ ] **Slice 9 (v1.0):** Dashboard Eksekutif Komprehensif & Polishing Akhir.
 
 ---
