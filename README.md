@@ -5,7 +5,7 @@
 [![Livewire 3](https://img.shields.io/badge/Livewire-3-FB70A9?style=flat&logo=livewire)](https://livewire.laravel.com)
 [![Tailwind CSS v4](https://img.shields.io/badge/TailwindCSS-v4-06B6D4?style=flat&logo=tailwindcss)](https://tailwindcss.com)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat&logo=docker)](https://docker.com)
-[![Version](https://img.shields.io/badge/Version-0.1-emerald)](https://github.com/SkillBelajar/crm_ai)
+[![Version](https://img.shields.io/badge/Version-0.3-emerald)](https://github.com/SkillBelajar/crm_ai)
 
 SaaS Gratis dengan arsitektur **BYOK (Bring Your Own Key) Custom AI Endpoint**. Dirancang khusus untuk mengendalikan dinamika percakapan prospek melalui 3 misi psikologis strategis dengan performa worker Laravel Octane (FrankenPHP) dan UI reaktif Livewire 3 + Alpine.js.
 
@@ -25,10 +25,10 @@ SaaS Gratis dengan arsitektur **BYOK (Bring Your Own Key) Custom AI Endpoint**. 
 ## Tech Stack & Arsitektur
 
 - **Backend:** Laravel 13 + Laravel Octane (FrankenPHP worker di port internal 8000).
-- **Web Server:** Nginx Alpine sebagai Reverse Proxy dengan direct static asset caching.
+- **Web Server:** Nginx Alpine sebagai Reverse Proxy dengan direct static asset caching & preserve X-Forwarded-Proto.
 - **Frontend & Dynamic UI:** Livewire 3 + Alpine.js + Tailwind CSS v4 via Vite.
 - **Database Engine:** MySQL 8.0 (Database: `crm_psikologis`).
-- **Cache, Session, & Queue:** Redis Alpine.
+- **Cache, Session, & Queue:** Redis Alpine (`SESSION_DRIVER=redis`, `CACHE_STORE=redis`).
 - **Continuous Project Memory:** `.ai-project-memory.md` (Visi 5W+1H, spesifikasi arsitektur, dan roadmap slice 1–9).
 
 ---
@@ -51,19 +51,24 @@ Container yang dijalankan:
 - `crm_db`: MySQL 8.0 (Port host: `33091`)
 - `crm_redis`: Redis Alpine (Port host: `63831`)
 
-### 3. Migrasi Database
+### 3. Migrasi & Seeder Database
 ```bash
 docker compose exec app php artisan migrate --force
+docker compose exec app php artisan db:seed --force
 ```
 
-### 4. Akses Aplikasi
-Buka browser pada:
-```
-http://localhost:8484
-```
-Komponen **Health Check** real-time akan menampilkan status koneksi MySQL, Redis, dan Octane server, beserta footer versi global: **Versi: 0.1**.
+### 4. Akun Bawaan untuk Pengujian (Seeder)
+- **Admin:** `admin@crm.test` | Kata Sandi: `password123` (Akses `/admin`)
+- **User:** `user@crm.test` | Kata Sandi: `password123` (Akses `/dashboard`)
 
-### 5. Menjalankan Test Suite
+### 5. Akses Aplikasi
+- **Aplikasi Publik:** `https://crm.pawandigital.id/`
+- **Lokal:** `http://localhost:8484`
+- **Login:** `https://crm.pawandigital.id/login`
+- **Daftar Akun Gratis:** `https://crm.pawandigital.id/register`
+- **Diagnostik Sistem:** `https://crm.pawandigital.id/system-health`
+
+### 6. Menjalankan Test Suite
 ```bash
 docker compose exec app php artisan test
 ```
@@ -72,11 +77,14 @@ docker compose exec app php artisan test
 
 ## Status Roadmap
 - [x] **Slice 1 (v0.1):** Setup Arsitektur Dasar (Docker, Laravel Octane, MySQL, Redis, Livewire, Tailwind CSS, Alpine.js, Health Check & Continuous Memory).
-- [ ] **Slice 2:** BYOK Custom AI Endpoint & Prompt Orchestration.
-- [ ] **Slice 3:** Modul 1 &mdash; Pancing & Catat.
-- [ ] **Slice 4:** Modul 2 &mdash; Filtrasi Anti-Lilin (Conditional Yes).
-- [ ] **Slice 5:** Modul 3 &mdash; Kunci Kontrak Psikologis 24 Jam.
-- [ ] **Slice 6 - 9:** Analytics, Webhook/WA Ingress, Multi-Tenant & Hardening.
+- [x] **Slice 2 (v0.2):** Modul Landing Page Executive Minimalist, Dark/Light Mode, Responsif Mobile, BYOK, Diagnostik System Health.
+- [x] **Slice 3 (v0.3):** Modul Autentikasi (Livewire 3), Multi-Tenancy / RBAC (`admin`/`user`), Session Driver Redis, Dashboard Eksekutif & Admin Panel.
+- [ ] **Slice 4 (v0.4):** BYOK Settings & AI Connection Manager.
+- [ ] **Slice 5 (v0.5):** Pipeline & Prospek Management.
+- [ ] **Slice 6 (v0.6):** Active Elicitation Logger & Misi 1.
+- [ ] **Slice 7 (v0.7):** AI Anti-Lilin Engine & Conditional Yes.
+- [ ] **Slice 8 (v0.8):** 24-Hour Psychological Lock & Evaluasi 7 Hari.
+- [ ] **Slice 9 (v1.0):** Dashboard Eksekutif Komprehensif & Polishing Akhir.
 
 ---
 

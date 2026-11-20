@@ -100,15 +100,21 @@
                 </button>
 
                 <!-- Auth Buttons -->
-                <a href="/login" class="text-xs font-semibold px-3.5 py-2 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition">
-                    Masuk
-                </a>
-                <a href="/register" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-md shadow-indigo-600/25 transition">
-                    <span>Mulai Gratis</span>
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                    </svg>
-                </a>
+                @auth
+                    <a href="{{ auth()->user()->isAdmin() ? '/admin' : '/dashboard' }}" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-md shadow-indigo-600/25 transition">
+                        <span>Ke Dashboard ({{ auth()->user()->name }}) &rarr;</span>
+                    </a>
+                @else
+                    <a href="/login" class="text-xs font-semibold px-3.5 py-2 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition">
+                        Masuk
+                    </a>
+                    <a href="/register" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-md shadow-indigo-600/25 transition">
+                        <span>Mulai Gratis</span>
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                    </a>
+                @endauth
             </div>
 
             <!-- Mobile Hamburger Button -->
@@ -159,13 +165,21 @@
                     <span>Diagnostik Sistem</span>
                 </a>
             </div>
-            <div class="pt-3 border-t border-slate-200 dark:border-slate-800 grid grid-cols-2 gap-2">
-                <a href="/login" class="text-center py-2.5 px-3 rounded-xl border border-slate-200 dark:border-slate-700 font-semibold text-xs text-slate-700 dark:text-slate-300">
-                    Masuk
-                </a>
-                <a href="/register" class="text-center py-2.5 px-3 rounded-xl bg-indigo-600 text-white font-semibold text-xs shadow-md shadow-indigo-600/30">
-                    Mulai Gratis
-                </a>
+            <div class="pt-3 border-t border-slate-200 dark:border-slate-800">
+                @auth
+                    <a href="{{ auth()->user()->isAdmin() ? '/admin' : '/dashboard' }}" class="block text-center py-2.5 px-3 rounded-xl bg-indigo-600 text-white font-semibold text-xs shadow-md shadow-indigo-600/30">
+                        Ke Dashboard ({{ auth()->user()->name }})
+                    </a>
+                @else
+                    <div class="grid grid-cols-2 gap-2">
+                        <a href="/login" class="text-center py-2.5 px-3 rounded-xl border border-slate-200 dark:border-slate-700 font-semibold text-xs text-slate-700 dark:text-slate-300">
+                            Masuk
+                        </a>
+                        <a href="/register" class="text-center py-2.5 px-3 rounded-xl bg-indigo-600 text-white font-semibold text-xs shadow-md shadow-indigo-600/30">
+                            Mulai Gratis
+                        </a>
+                    </div>
+                @endauth
             </div>
         </div>
     </header>
