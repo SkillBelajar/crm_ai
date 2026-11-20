@@ -95,7 +95,7 @@
                         <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 space-y-2">
                             <h4 class="text-xs font-mono font-bold uppercase text-slate-500 dark:text-slate-400">Contoh Konfigurasi Mandiri</h4>
                             <ul class="text-xs text-slate-600 dark:text-slate-300 space-y-1.5 font-mono">
-                                <li><strong class="text-slate-900 dark:text-white">Base URL:</strong> <code>http://213.199.61.184:20130/v1</code></li>
+                                <li><strong class="text-slate-900 dark:text-white">Base URL:</strong> <code>https://api.openai.com/v1</code> (atau server Anda)</li>
                                 <li><strong class="text-slate-900 dark:text-white">API Key:</strong> <code>sk-your-secret-api-key</code></li>
                                 <li><strong class="text-slate-900 dark:text-white">Model:</strong> <code>gpt-4o-mini</code> atau <code>deepseek-chat</code></li>
                             </ul>

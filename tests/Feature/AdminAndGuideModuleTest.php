@@ -31,7 +31,7 @@ class AdminAndGuideModuleTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Panduan Pengguna &amp; Standard Operating Procedure', false);
         $response->assertSee('Setup Endpoint AI Mandiri');
-        $response->assertSee('http://213.199.61.184:20130/v1');
+        $response->assertSee('https://api.openai.com/v1');
         $response->assertSee('Praktik 3 Misi');
         $response->assertSee('Memantau Smart Goal 7 Hari');
         $response->assertSee('Versi: 1.0');

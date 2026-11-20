@@ -118,7 +118,7 @@
                             type="text"
                             id="base_url"
                             wire:model="base_url"
-                            placeholder="http://213.199.61.184:20130/v1"
+                            placeholder="https://api.openai.com/v1"
                             class="w-full px-3.5 py-2.5 rounded-xl border font-mono text-sm bg-zinc-50/50 dark:bg-zinc-800/50 border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors"
                         />
                     </div>
@@ -258,10 +258,10 @@
                     <!-- Provider 1 -->
                     <div class="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-100 dark:border-zinc-800 space-y-1">
                         <div class="flex items-center justify-between">
-                            <span class="font-semibold text-zinc-900 dark:text-zinc-200">Server Privat / FreeLLMPool</span>
-                            <span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 font-mono">Bebas Biaya</span>
+                            <span class="font-semibold text-zinc-900 dark:text-zinc-200">Server Privat / Custom</span>
+                            <span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 font-mono">Lokal / Cloud</span>
                         </div>
-                        <p class="font-mono text-[11px] text-zinc-500 break-all">http://213.199.61.184:20130/v1</p>
+                        <p class="font-mono text-[11px] text-zinc-500 break-all">https://ai.example.com/v1</p>
                         <p class="text-[11px]">Model: <code class="font-mono text-zinc-700 dark:text-zinc-300">gpt-4o-mini</code></p>
                     </div>
 

@@ -54,7 +54,7 @@ class AiSettingsForm extends Component
                     : null;
             } else {
                 // Default helper suggestion
-                $this->base_url = 'http://213.199.61.184:20130/v1';
+                $this->base_url = 'https://api.openai.com/v1';
                 $this->model_name = 'gpt-4o-mini';
             }
         }

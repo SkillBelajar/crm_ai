@@ -56,7 +56,7 @@ class AiSettingsAndClientTest extends TestCase
         $this->actingAs($user);
 
         Livewire::test(AiSettingsForm::class)
-            ->set('base_url', 'http://213.199.61.184:20130/v1')
+            ->set('base_url', 'https://api.openai.com/v1')
             ->set('api_key', 'sk-test-secret-key-123')
             ->set('model_name', 'gpt-4o-mini')
             ->call('save')
@@ -64,7 +64,7 @@ class AiSettingsAndClientTest extends TestCase
 
         $this->assertDatabaseHas('user_ai_settings', [
             'user_id' => $user->id,
-            'base_url' => 'http://213.199.61.184:20130/v1',
+            'base_url' => 'https://api.openai.com/v1',
             'model_name' => 'gpt-4o-mini',
         ]);
 
@@ -100,7 +100,7 @@ class AiSettingsAndClientTest extends TestCase
     public function test_ai_client_service_test_connection_success_with_mocked_http(): void
     {
         Http::fake([
-            'http://213.199.61.184:20130/v1/chat/completions' => Http::response([
+            'https://api.openai.com/v1/chat/completions' => Http::response([
                 'choices' => [
                     [
                         'message' => [
@@ -113,7 +113,7 @@ class AiSettingsAndClientTest extends TestCase
         ]);
 
         $service = new AiClientService();
-        $result = $service->testConnection('http://213.199.61.184:20130/v1', 'test-key', 'gpt-4o-mini');
+        $result = $service->testConnection('https://api.openai.com/v1', 'test-key', 'gpt-4o-mini');
 
         $this->assertTrue($result['success']);
         $this->assertEquals('OK', $result['reply']);
@@ -144,7 +144,7 @@ class AiSettingsAndClientTest extends TestCase
     public function test_ai_client_service_chat_method_sends_proper_payload(): void
     {
         Http::fake([
-            'http://213.199.61.184:20130/v1/chat/completions' => Http::response([
+            'https://api.openai.com/v1/chat/completions' => Http::response([
                 'choices' => [
                     [
                         'message' => [
@@ -166,7 +166,7 @@ class AiSettingsAndClientTest extends TestCase
 
         $setting = UserAiSetting::create([
             'user_id' => $user->id,
-            'base_url' => 'http://213.199.61.184:20130/v1',
+            'base_url' => 'https://api.openai.com/v1',
             'api_key' => 'token-abc',
             'model_name' => 'llama-3.1-8b',
             'is_verified' => true,
@@ -186,7 +186,7 @@ class AiSettingsAndClientTest extends TestCase
     public function test_livewire_test_connection_action_verifies_setting(): void
     {
         Http::fake([
-            'http://213.199.61.184:20130/v1/chat/completions' => Http::response([
+            'https://api.openai.com/v1/chat/completions' => Http::response([
                 'choices' => [
                     [
                         'message' => [
@@ -209,7 +209,7 @@ class AiSettingsAndClientTest extends TestCase
         $this->actingAs($user);
 
         Livewire::test(AiSettingsForm::class)
-            ->set('base_url', 'http://213.199.61.184:20130/v1')
+            ->set('base_url', 'https://api.openai.com/v1')
             ->set('api_key', 'valid-key')
             ->set('model_name', 'gpt-4o-mini')
             ->call('testConnection')
