@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\AiSettingsForm;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
 use App\Models\User;
@@ -42,7 +43,9 @@ Route::middleware('auth')->group(function () {
 
     // User Dashboard
     Route::get('/dashboard', function () {
-        if (Auth::user()->isAdmin()) {
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        if ($user->isAdmin()) {
             return redirect()->route('admin.dashboard');
         }
         return view('dashboard');
@@ -57,9 +60,7 @@ Route::middleware('auth')->group(function () {
         return view('placeholders.meetings');
     })->name('meetings');
 
-    Route::get('/ai-settings', function () {
-        return view('placeholders.ai-settings');
-    })->name('ai-settings');
+    Route::get('/ai-settings', AiSettingsForm::class)->name('ai-settings');
 
     Route::get('/guide', function () {
         return view('placeholders.guide');
