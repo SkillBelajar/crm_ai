@@ -20,7 +20,7 @@ class AuthenticationAndRoleTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('Masuk ke Akun');
-        $response->assertSee('Versi: 0.5');
+        $response->assertSee('Versi: 0.6');
         $response->assertSee('Ingat Saya');
     }
 
@@ -30,7 +30,7 @@ class AuthenticationAndRoleTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('Daftar Akun Gratis');
-        $response->assertSee('Versi: 0.5');
+        $response->assertSee('Versi: 0.6');
         $response->assertSee('Konfirmasi Kata Sandi');
     }
 
@@ -151,7 +151,7 @@ class AuthenticationAndRoleTest extends TestCase
         $response->assertSee('Panel Administrator MindControl');
         $response->assertSee('Pusat Kendali Pengguna');
         $response->assertSee('superadmin@crm.test');
-        $response->assertSee('Versi: 0.5');
+        $response->assertSee('Versi: 0.6');
     }
 
     public function test_user_can_register_new_account_via_livewire(): void
@@ -205,7 +205,7 @@ class AuthenticationAndRoleTest extends TestCase
         foreach ($routes as $route) {
             $response = $this->actingAs($user)->get($route);
             $response->assertStatus(200);
-            $response->assertSee('Versi: 0.5');
+            $response->assertSee('Versi: 0.6');
         }
     }
 }

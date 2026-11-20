@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Contact extends Model
 {
@@ -57,5 +58,13 @@ class Contact extends Model
     public function getCategoryLabelAttribute(): string
     {
         return self::CATEGORIES[$this->category] ?? ucfirst($this->category);
+    }
+
+    /**
+     * Get all meetings / sessions with this contact.
+     */
+    public function meetings(): HasMany
+    {
+        return $this->hasMany(Meeting::class);
     }
 }

@@ -5,6 +5,8 @@ use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
 use App\Livewire\ContactIndex;
 use App\Livewire\ContactShow;
+use App\Livewire\MeetingIndex;
+use App\Livewire\MeetingWorkspace;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -57,9 +59,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/contacts', ContactIndex::class)->name('contacts');
     Route::get('/contacts/{contact}', ContactShow::class)->name('contacts.show');
 
-    Route::get('/meetings', function () {
-        return view('placeholders.meetings');
-    })->name('meetings');
+    // 3 Missions & Meetings Workspace Module (Slice 6)
+    Route::get('/meetings', MeetingIndex::class)->name('meetings');
+    Route::get('/meetings/{meeting}', MeetingWorkspace::class)->name('meetings.show');
 
     Route::get('/ai-settings', AiSettingsForm::class)->name('ai-settings');
 

@@ -328,7 +328,7 @@
                     </div>
 
                     <!-- Modal Body Form -->
-                    <form wire:submit.prevent="save">
+                    <form wire:submit="save">
                         <div class="p-6 space-y-4 max-h-[75vh] overflow-y-auto">
                             <!-- Nama Lengkap -->
                             <div>

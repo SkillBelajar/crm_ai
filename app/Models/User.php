@@ -58,4 +58,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Contact::class);
     }
+
+    /**
+     * Get all meetings / sessions owned by the user.
+     */
+    public function meetings(): HasMany
+    {
+        return $this->hasMany(Meeting::class);
+    }
 }

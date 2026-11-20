@@ -47,7 +47,7 @@
                 <span>Edit Profil</span>
             </button>
 
-            <a href="{{ route('meetings') }}"
+            <a href="{{ route('meetings', ['new_with' => $contact->id]) }}"
                class="inline-flex items-center space-x-1.5 px-4 py-2 text-sm font-medium rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white shadow-xs shadow-indigo-600/30 transition-all hover:scale-[1.01] active:scale-[0.99]">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -151,29 +151,60 @@
                         </p>
                     </div>
                     <span class="px-2 py-0.5 rounded-full text-xs font-medium bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
-                        0 Sesi
+                        {{ $contact->meetings->count() }} Sesi
                     </span>
                 </div>
 
-                <!-- Empty State Riwayat Pertemuan -->
-                <div class="py-8 text-center">
-                    <div class="w-12 h-12 mx-auto mb-3 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-400 dark:text-zinc-500 flex items-center justify-center">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
+                @if ($contact->meetings->count() > 0)
+                    <div class="space-y-3">
+                        @foreach ($contact->meetings()->latest('meeting_date')->get() as $m)
+                            @php $dInfo = $m->getDeadlineInfo(); @endphp
+                            <div class="p-3.5 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200/80 dark:border-zinc-700/80 flex items-center justify-between gap-3">
+                                <div class="min-w-0">
+                                    <a href="{{ route('meetings.show', $m->id) }}" class="font-bold text-sm text-zinc-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors block truncate">
+                                        {{ $m->title }}
+                                    </a>
+                                    <div class="flex items-center space-x-2 text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+                                        <span>{{ $m->meeting_date ? $m->meeting_date->format('d M Y') : '-' }}</span>
+                                        <span>•</span>
+                                        <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[11px] font-medium border {{ $dInfo['badge'] }}">
+                                            {{ $dInfo['label'] }}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center space-x-2 shrink-0">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold border {{ $m->status_badge_class }}">
+                                        {{ $m->status_label }}
+                                    </span>
+                                    <a href="{{ route('meetings.show', $m->id) }}" class="p-1.5 rounded-lg text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                                    </a>
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
-                    <h3 class="text-sm font-semibold text-zinc-900 dark:text-white">Belum Ada Sesi Pertemuan</h3>
-                    <p class="text-xs text-zinc-500 dark:text-zinc-400 max-w-sm mx-auto mt-1 mb-4">
-                        Mulai pertemuan dengan <span class="font-medium text-zinc-700 dark:text-zinc-300">{{ $contact->name }}</span> untuk mengeksekusi Misi 1, 2, dan 3.
-                    </p>
-                    <a href="{{ route('meetings') }}"
-                       class="inline-flex items-center space-x-2 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs shadow-xs shadow-indigo-600/30 transition-all hover:scale-[1.01] active:scale-[0.99]">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                        </svg>
-                        <span>Mulai Sesi 3 Misi Baru</span>
-                    </a>
-                </div>
+                @else
+                    <!-- Empty State Riwayat Pertemuan -->
+                    <div class="py-8 text-center">
+                        <div class="w-12 h-12 mx-auto mb-3 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-400 dark:text-zinc-500 flex items-center justify-center">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-sm font-semibold text-zinc-900 dark:text-white">Belum Ada Sesi Pertemuan</h3>
+                        <p class="text-xs text-zinc-500 dark:text-zinc-400 max-w-sm mx-auto mt-1 mb-4">
+                            Mulai pertemuan dengan <span class="font-medium text-zinc-700 dark:text-zinc-300">{{ $contact->name }}</span> untuk mengeksekusi Misi 1, 2, dan 3.
+                        </p>
+                        <a href="{{ route('meetings', ['new_with' => $contact->id]) }}"
+                           class="inline-flex items-center space-x-2 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs shadow-xs shadow-indigo-600/30 transition-all hover:scale-[1.01] active:scale-[0.99]">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                            </svg>
+                            <span>Mulai Sesi 3 Misi Baru</span>
+                        </a>
+                    </div>
+                @endif
             </div>
         </div>
 
@@ -271,7 +302,7 @@
                         </button>
                     </div>
 
-                    <form wire:submit.prevent="updateContact">
+                    <form wire:submit="updateContact">
                         <div class="p-6 space-y-4 max-h-[75vh] overflow-y-auto">
                             <!-- Nama Lengkap -->
                             <div>

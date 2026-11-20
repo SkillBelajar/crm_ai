@@ -20,7 +20,7 @@ class LandingPageTest extends TestCase
         $response->assertSee('Kunci Kontrak Psikologis', false);
         $response->assertSee('Keunggulan SaaS Gratis &amp; AI Mandiri (BYOK)', false);
         $response->assertSee('Cara Kerja dalam 3 Langkah Praktis', false);
-        $response->assertSee('Versi: 0.5');
+        $response->assertSee('Versi: 0.6');
     }
 
     public function test_auth_routes_respond_with_200_and_v0_5(): void
@@ -28,11 +28,11 @@ class LandingPageTest extends TestCase
         $loginResponse = $this->get('/login');
         $loginResponse->assertStatus(200);
         $loginResponse->assertSee('Masuk ke Akun');
-        $loginResponse->assertSee('Versi: 0.5');
+        $loginResponse->assertSee('Versi: 0.6');
 
         $registerResponse = $this->get('/register');
         $registerResponse->assertStatus(200);
         $registerResponse->assertSee('Daftar Akun Gratis');
-        $registerResponse->assertSee('Versi: 0.5');
+        $registerResponse->assertSee('Versi: 0.6');
     }
 }
