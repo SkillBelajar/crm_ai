@@ -55,9 +55,31 @@
                 <option value="sent" @selected($status === 'sent')>Sudah Dikirim (Menunggu Respon)</option>
                 <option value="committed" @selected($status === 'committed')>Komitmen Tercapai (Deal/Action Done)</option>
                 <option value="failed" @selected($status === 'failed')>Batal / Gagal</option>
+                <option value="archived" @selected($status === 'archived')>📦 Arsip (Workspace Tidak Aktif)</option>
             </select>
         </div>
     </div>
+
+    @if ($status === 'archived')
+        <!-- ARSIP NOTICE BANNER -->
+        <div class="p-4 bg-zinc-100 dark:bg-zinc-800/90 border border-zinc-300 dark:border-zinc-700 rounded-2xl flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs text-zinc-700 dark:text-zinc-300 shadow-xs">
+            <div class="flex items-center gap-3">
+                <span class="w-8 h-8 rounded-xl bg-zinc-200 dark:bg-zinc-700 flex items-center justify-center text-base shrink-0">📦</span>
+                <div>
+                    <span class="font-bold text-zinc-900 dark:text-white">Workspace Ini Berstatus Arsip (Tidak Aktif).</span>
+                    <p class="text-zinc-500 dark:text-zinc-400 mt-0.5">Sesi ini telah diarsipkan dan tidak masuk ke dalam tracker aktif. Semua catatan & log tetap tersimpan utuh.</p>
+                </div>
+            </div>
+            <button
+                wire:click="unarchiveWorkspace"
+                type="button"
+                class="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 bg-white dark:bg-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-600 text-zinc-900 dark:text-white font-semibold rounded-xl border border-zinc-300 dark:border-zinc-600 shadow-xs transition shrink-0"
+            >
+                <svg class="w-3.5 h-3.5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                <span>Aktifkan Sesi Ini Lagi</span>
+            </button>
+        </div>
+    @endif
 
     <!-- FLASH FEEDBACK TOAST -->
     @if ($feedbackMessage)
@@ -614,6 +636,7 @@
                                 <option value="sent">Sudah Dikirim (Menunggu Respon)</option>
                                 <option value="committed">Komitmen Tercapai (Deal/Action Done)</option>
                                 <option value="failed">Batal / Gagal</option>
+                                <option value="archived">📦 Arsip (Workspace Tidak Aktif)</option>
                             </select>
                         </div>
 

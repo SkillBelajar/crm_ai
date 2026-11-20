@@ -257,4 +257,81 @@ class MeetingAndMissionTest extends TestCase
             'id' => $meeting->id,
         ]);
     }
+
+    public function test_user_can_filter_meetings_by_status_and_archive_workspace(): void
+    {
+        $meetingDraft = Meeting::factory()->create([
+            'user_id' => $this->user->id,
+            'contact_id' => $this->contact->id,
+            'title' => 'Sesi Draft Aktif',
+            'status' => Meeting::STATUS_DRAFT,
+        ]);
+
+        $meetingCommitted = Meeting::factory()->create([
+            'user_id' => $this->user->id,
+            'contact_id' => $this->contact->id,
+            'title' => 'Sesi Berhasil Deal',
+            'status' => Meeting::STATUS_COMMITTED,
+        ]);
+
+        $meetingArchived = Meeting::factory()->create([
+            'user_id' => $this->user->id,
+            'contact_id' => $this->contact->id,
+            'title' => 'Sesi Selesai Diarsipkan',
+            'status' => Meeting::STATUS_ARCHIVED,
+        ]);
+
+        // Test filtering by status pills / dropdown in MeetingIndex
+        Livewire::actingAs($this->user)
+            ->test(MeetingIndex::class)
+            ->assertSee('Semua Sesi')
+            ->assertSee('Draft')
+            ->assertSee('Arsip (Tidak Aktif)')
+            ->call('setStatusFilter', Meeting::STATUS_ARCHIVED)
+            ->assertSee('Sesi Selesai Diarsipkan')
+            ->assertDontSee('Sesi Draft Aktif')
+            ->assertDontSee('Sesi Berhasil Deal')
+            ->call('setStatusFilter', Meeting::STATUS_COMMITTED)
+            ->assertSee('Sesi Berhasil Deal')
+            ->assertDontSee('Sesi Selesai Diarsipkan')
+            ->call('setStatusFilter', '')
+            ->assertSee('Sesi Draft Aktif')
+            ->assertSee('Sesi Berhasil Deal')
+            ->assertSee('Sesi Selesai Diarsipkan');
+
+        // Test toggle archive directly from MeetingIndex
+        Livewire::actingAs($this->user)
+            ->test(MeetingIndex::class)
+            ->call('toggleArchive', $meetingDraft->id);
+
+        $this->assertEquals(Meeting::STATUS_ARCHIVED, $meetingDraft->fresh()->status);
+
+        // Toggle back from archive
+        Livewire::actingAs($this->user)
+            ->test(MeetingIndex::class)
+            ->call('toggleArchive', $meetingDraft->id);
+
+        $this->assertEquals(Meeting::STATUS_DRAFT, $meetingDraft->fresh()->status);
+    }
+
+    public function test_workspace_supports_archived_status_and_shows_inactive_banner(): void
+    {
+        $meeting = Meeting::factory()->create([
+            'user_id' => $this->user->id,
+            'contact_id' => $this->contact->id,
+            'title' => 'Sesi Akan Diarsipkan',
+            'status' => Meeting::STATUS_DRAFT,
+        ]);
+
+        Livewire::actingAs($this->user)
+            ->test(MeetingWorkspace::class, ['meeting' => $meeting])
+            ->call('updateStatus', Meeting::STATUS_ARCHIVED)
+            ->assertSet('status', Meeting::STATUS_ARCHIVED)
+            ->assertSee('Workspace Ini Berstatus Arsip (Tidak Aktif)')
+            ->call('unarchiveWorkspace')
+            ->assertSet('status', Meeting::STATUS_DRAFT)
+            ->assertDontSee('Workspace Ini Berstatus Arsip (Tidak Aktif)');
+
+        $this->assertEquals(Meeting::STATUS_DRAFT, $meeting->fresh()->status);
+    }
 }

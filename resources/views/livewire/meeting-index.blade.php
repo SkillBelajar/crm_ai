@@ -46,6 +46,78 @@
         </div>
     @endif
 
+    <!-- STATUS FILTER PILLS -->
+    <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+        <button
+            wire:click="setStatusFilter('')"
+            type="button"
+            class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all {{ empty($statusFilter) ? 'bg-indigo-600 text-white shadow-xs' : 'bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800' }}"
+        >
+            <span>Semua Sesi</span>
+            <span class="px-1.5 py-0.5 rounded-full text-[10px] font-bold {{ empty($statusFilter) ? 'bg-white/20 text-white' : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400' }}">
+                {{ $statusCounts['all'] ?? 0 }}
+            </span>
+        </button>
+
+        <button
+            wire:click="setStatusFilter('draft')"
+            type="button"
+            class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all {{ $statusFilter === 'draft' ? 'bg-amber-600 text-white shadow-xs' : 'bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800' }}"
+        >
+            <span>Draft</span>
+            <span class="px-1.5 py-0.5 rounded-full text-[10px] font-bold {{ $statusFilter === 'draft' ? 'bg-white/20 text-white' : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400' }}">
+                {{ $statusCounts[\App\Models\Meeting::STATUS_DRAFT] ?? 0 }}
+            </span>
+        </button>
+
+        <button
+            wire:click="setStatusFilter('sent')"
+            type="button"
+            class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all {{ $statusFilter === 'sent' ? 'bg-indigo-600 text-white shadow-xs' : 'bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800' }}"
+        >
+            <span>Sudah Dikirim</span>
+            <span class="px-1.5 py-0.5 rounded-full text-[10px] font-bold {{ $statusFilter === 'sent' ? 'bg-white/20 text-white' : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400' }}">
+                {{ $statusCounts[\App\Models\Meeting::STATUS_SENT] ?? 0 }}
+            </span>
+        </button>
+
+        <button
+            wire:click="setStatusFilter('committed')"
+            type="button"
+            class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all {{ $statusFilter === 'committed' ? 'bg-emerald-600 text-white shadow-xs' : 'bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800' }}"
+        >
+            <span>Komitmen Tercapai</span>
+            <span class="px-1.5 py-0.5 rounded-full text-[10px] font-bold {{ $statusFilter === 'committed' ? 'bg-white/20 text-white' : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400' }}">
+                {{ $statusCounts[\App\Models\Meeting::STATUS_COMMITTED] ?? 0 }}
+            </span>
+        </button>
+
+        <button
+            wire:click="setStatusFilter('failed')"
+            type="button"
+            class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all {{ $statusFilter === 'failed' ? 'bg-rose-600 text-white shadow-xs' : 'bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800' }}"
+        >
+            <span>Gagal / Batal</span>
+            <span class="px-1.5 py-0.5 rounded-full text-[10px] font-bold {{ $statusFilter === 'failed' ? 'bg-white/20 text-white' : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400' }}">
+                {{ $statusCounts[\App\Models\Meeting::STATUS_FAILED] ?? 0 }}
+            </span>
+        </button>
+
+        <button
+            wire:click="setStatusFilter('archived')"
+            type="button"
+            class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all {{ $statusFilter === 'archived' ? 'bg-zinc-700 text-white shadow-xs ring-2 ring-zinc-500/50' : 'bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800' }}"
+        >
+            <span class="flex items-center gap-1.5">
+                <span>📦</span>
+                <span>Arsip (Tidak Aktif)</span>
+            </span>
+            <span class="px-1.5 py-0.5 rounded-full text-[10px] font-bold {{ $statusFilter === 'archived' ? 'bg-white/20 text-white' : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400' }}">
+                {{ $statusCounts[\App\Models\Meeting::STATUS_ARCHIVED] ?? 0 }}
+            </span>
+        </button>
+    </div>
+
     <!-- FILTER & SEARCH BAR -->
     <div class="p-4 bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-xs flex flex-col md:flex-row gap-3">
         <!-- Search -->
@@ -74,11 +146,12 @@
                 wire:model.live="statusFilter"
                 class="px-3.5 py-2 bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700 rounded-xl text-sm text-zinc-700 dark:text-zinc-200 focus:outline-hidden focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
             >
-                <option value="">Semua Status</option>
+                <option value="">Semua Status Sesi</option>
                 <option value="draft">Draft (Menyusun Strategi)</option>
                 <option value="sent">Sudah Dikirim</option>
                 <option value="committed">Komitmen Tercapai</option>
                 <option value="failed">Batal / Gagal</option>
+                <option value="archived">📦 Arsip (Workspace Tidak Aktif)</option>
             </select>
 
             <!-- Filter Kontak -->
@@ -176,6 +249,26 @@
                                             </svg>
                                         </a>
 
+                                        @if ($meeting->status === \App\Models\Meeting::STATUS_ARCHIVED)
+                                            <button
+                                                wire:click="toggleArchive({{ $meeting->id }})"
+                                                type="button"
+                                                class="p-1.5 rounded-lg text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 transition-colors"
+                                                title="Aktifkan Kembali Sesi dari Arsip"
+                                            >
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                                            </button>
+                                        @else
+                                            <button
+                                                wire:click="toggleArchive({{ $meeting->id }})"
+                                                type="button"
+                                                class="p-1.5 rounded-lg text-zinc-400 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-900/20 transition-colors"
+                                                title="Pindahkan ke Arsip (Workspace Tidak Aktif)"
+                                            >
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg>
+                                            </button>
+                                        @endif
+
                                         <button
                                             wire:click="confirmDelete({{ $meeting->id }})"
                                             type="button"
@@ -216,14 +309,37 @@
                             </span>
                         </div>
 
-                        <button
-                            wire:click="confirmDelete({{ $meeting->id }})"
-                            class="text-zinc-400 hover:text-rose-500 p-1"
-                        >
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                            </svg>
-                        </button>
+                        <div class="flex items-center space-x-1">
+                            @if ($meeting->status === \App\Models\Meeting::STATUS_ARCHIVED)
+                                <button
+                                    wire:click="toggleArchive({{ $meeting->id }})"
+                                    type="button"
+                                    class="text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 p-1.5 rounded-lg"
+                                    title="Aktifkan Kembali dari Arsip"
+                                >
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                                </button>
+                            @else
+                                <button
+                                    wire:click="toggleArchive({{ $meeting->id }})"
+                                    type="button"
+                                    class="text-zinc-400 hover:text-amber-600 dark:hover:text-amber-400 p-1.5 rounded-lg"
+                                    title="Pindahkan ke Arsip"
+                                >
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg>
+                                </button>
+                            @endif
+
+                            <button
+                                wire:click="confirmDelete({{ $meeting->id }})"
+                                class="text-zinc-400 hover:text-rose-500 p-1.5 rounded-lg"
+                                title="Hapus Sesi"
+                            >
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                </svg>
+                            </button>
+                        </div>
                     </div>
 
                     <div>

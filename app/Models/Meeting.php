@@ -17,12 +17,14 @@ class Meeting extends Model
     public const STATUS_SENT = 'sent';
     public const STATUS_COMMITTED = 'committed';
     public const STATUS_FAILED = 'failed';
+    public const STATUS_ARCHIVED = 'archived';
 
     public const STATUSES = [
         self::STATUS_DRAFT => 'Draft',
         self::STATUS_SENT => 'Sudah Dikirim',
         self::STATUS_COMMITTED => 'Komitmen Tercapai',
         self::STATUS_FAILED => 'Gagal / Batal',
+        self::STATUS_ARCHIVED => 'Arsip (Tidak Aktif)',
     ];
 
     protected $fillable = [
@@ -87,7 +89,8 @@ class Meeting extends Model
         return match ($this->status) {
             self::STATUS_COMMITTED => 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20',
             self::STATUS_SENT => 'bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20',
-            self::STATUS_FAILED => 'bg-zinc-500/10 text-zinc-600 dark:text-zinc-400 border-zinc-500/20',
+            self::STATUS_FAILED => 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20',
+            self::STATUS_ARCHIVED => 'bg-zinc-500/10 text-zinc-600 dark:text-zinc-400 border-zinc-500/20',
             default => 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20',
         };
     }
@@ -97,6 +100,15 @@ class Meeting extends Model
      */
     public function getDeadlineInfo(): array
     {
+        if ($this->status === self::STATUS_ARCHIVED) {
+            return [
+                'status' => 'archived',
+                'label' => 'Arsip (Tidak Aktif)',
+                'badge' => 'bg-zinc-500/10 text-zinc-500 dark:text-zinc-400 border-zinc-500/20',
+                'is_overdue' => false,
+            ];
+        }
+
         if ($this->status === self::STATUS_COMMITTED) {
             return [
                 'status' => 'committed',

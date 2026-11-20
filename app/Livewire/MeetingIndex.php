@@ -90,6 +90,12 @@ class MeetingIndex extends Component
         $this->resetPage();
     }
 
+    public function setStatusFilter(string $status): void
+    {
+        $this->statusFilter = $status;
+        $this->resetPage();
+    }
+
     public function updatedFormContactId($contactId): void
     {
         if ($contactId) {
@@ -189,6 +195,18 @@ class MeetingIndex extends Component
         }
     }
 
+    public function toggleArchive(int $id): void
+    {
+        $meeting = Auth::user()->meetings()->findOrFail($id);
+        if ($meeting->status === Meeting::STATUS_ARCHIVED) {
+            $meeting->update(['status' => Meeting::STATUS_DRAFT]);
+            $this->successMessage = "Sesi \"{$meeting->title}\" berhasil diaktifkan kembali dari arsip.";
+        } else {
+            $meeting->update(['status' => Meeting::STATUS_ARCHIVED]);
+            $this->successMessage = "Sesi \"{$meeting->title}\" berhasil dipindahkan ke Arsip (tidak aktif).";
+        }
+    }
+
     public function render()
     {
         /** @var \App\Models\User $user */
@@ -221,9 +239,25 @@ class MeetingIndex extends Component
         $meetings = $query->paginate(10);
         $contacts = $user->contacts()->orderBy('name')->get();
 
+        $rawCounts = $user->meetings()
+            ->selectRaw('status, count(*) as count')
+            ->groupBy('status')
+            ->pluck('count', 'status')
+            ->toArray();
+
+        $statusCounts = [
+            'all' => array_sum($rawCounts),
+            Meeting::STATUS_DRAFT => $rawCounts[Meeting::STATUS_DRAFT] ?? 0,
+            Meeting::STATUS_SENT => $rawCounts[Meeting::STATUS_SENT] ?? 0,
+            Meeting::STATUS_COMMITTED => $rawCounts[Meeting::STATUS_COMMITTED] ?? 0,
+            Meeting::STATUS_FAILED => $rawCounts[Meeting::STATUS_FAILED] ?? 0,
+            Meeting::STATUS_ARCHIVED => $rawCounts[Meeting::STATUS_ARCHIVED] ?? 0,
+        ];
+
         return view('livewire.meeting-index', [
             'meetings' => $meetings,
             'contacts' => $contacts,
+            'statusCounts' => $statusCounts,
         ]);
     }
 }

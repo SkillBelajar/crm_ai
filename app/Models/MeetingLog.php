@@ -17,11 +17,11 @@ class MeetingLog extends Model
     public const CHANNEL_NOTE = 'note';
 
     public const CHANNELS = [
+        self::CHANNEL_NOTE => 'Catatan Internal',
         self::CHANNEL_WHATSAPP => 'WhatsApp',
         self::CHANNEL_CALL => 'Panggilan Telepon',
         self::CHANNEL_MEETING => 'Tatap Muka / Rapat',
         self::CHANNEL_EMAIL => 'Email',
-        self::CHANNEL_NOTE => 'Catatan Internal',
     ];
 
     public const SENTIMENT_POSITIVE = 'positive';

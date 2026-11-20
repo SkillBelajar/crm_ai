@@ -38,13 +38,17 @@ class MeetingLogAndFollowUpdateTest extends TestCase
 
         $this->actingAs($user);
 
+        $this->assertSame(MeetingLog::CHANNEL_NOTE, array_key_first(MeetingLog::CHANNELS));
+
         Livewire::test(MeetingWorkspace::class, ['meeting' => $meeting])
+            ->assertSet('newLogChannel', MeetingLog::CHANNEL_NOTE)
             ->call('setTab', 'logs')
             ->assertSee('Log History')
             ->assertSee('Rekomendasi Taktis AI')
             ->assertSee('Target antusias menyetujui pertemuan besok')
             ->assertSee('WhatsApp')
-            ->assertSee('Positif / Tertarik');
+            ->assertSee('Positif / Tertarik')
+            ->assertSee('Catatan Internal');
     }
 
     public function test_user_can_add_log_entry_to_meeting(): void

@@ -8,6 +8,7 @@ use App\Services\StrategyAiService;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 
 #[Layout('layouts.app')]
@@ -16,6 +17,7 @@ class MeetingWorkspace extends Component
 {
     public Meeting $meeting;
 
+    #[Url(as: 'tab')]
     public string $activeTab = 'misi-1';
 
     // Misi 1 fields
@@ -40,7 +42,7 @@ class MeetingWorkspace extends Component
     public ?string $commitment_result = '';
 
     // Tab 4 (Log History & AI Follow Update) fields
-    public string $newLogChannel = MeetingLog::CHANNEL_WHATSAPP;
+    public string $newLogChannel = MeetingLog::CHANNEL_NOTE;
     public string $newLogSentiment = MeetingLog::SENTIMENT_NEUTRAL;
     public string $newLogContent = '';
     public string $newLoggedAt = '';
@@ -218,7 +220,7 @@ class MeetingWorkspace extends Component
     {
         $this->validate([
             'ai_psychological_contract' => 'nullable|string',
-            'status' => 'required|in:draft,sent,committed,failed',
+            'status' => 'required|in:draft,sent,committed,failed,archived',
             'commitment_result' => 'nullable|string',
         ]);
 
@@ -234,12 +236,22 @@ class MeetingWorkspace extends Component
 
     public function updateStatus(string $newStatus): void
     {
-        if (in_array($newStatus, [Meeting::STATUS_DRAFT, Meeting::STATUS_SENT, Meeting::STATUS_COMMITTED, Meeting::STATUS_FAILED])) {
+        if (in_array($newStatus, [Meeting::STATUS_DRAFT, Meeting::STATUS_SENT, Meeting::STATUS_COMMITTED, Meeting::STATUS_FAILED, Meeting::STATUS_ARCHIVED])) {
             $this->status = $newStatus;
             $this->meeting->update(['status' => $newStatus]);
             $this->feedbackMessage = 'Status sesi diperbarui menjadi: ' . $this->meeting->status_label;
             $this->feedbackType = 'success';
         }
+    }
+
+    public function archiveWorkspace(): void
+    {
+        $this->updateStatus(Meeting::STATUS_ARCHIVED);
+    }
+
+    public function unarchiveWorkspace(): void
+    {
+        $this->updateStatus(Meeting::STATUS_DRAFT);
     }
 
     /**
@@ -268,7 +280,7 @@ class MeetingWorkspace extends Component
 
         $this->newLogContent = '';
         $this->newLoggedAt = now()->format('Y-m-d\TH:i');
-        $this->newLogChannel = MeetingLog::CHANNEL_WHATSAPP;
+        $this->newLogChannel = MeetingLog::CHANNEL_NOTE;
         $this->newLogSentiment = MeetingLog::SENTIMENT_NEUTRAL;
 
         $this->meeting->load('logs');
