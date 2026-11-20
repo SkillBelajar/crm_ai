@@ -8,9 +8,9 @@ use Tests\TestCase;
 
 class ArchitectureAndHealthCheckTest extends TestCase
 {
-    public function test_version_config_is_configured_to_0_8(): void
+    public function test_version_config_is_configured_to_1_0(): void
     {
-        $this->assertEquals('0.8', config('app.version'));
+        $this->assertEquals('1.0', config('app.version'));
     }
 
     public function test_system_health_page_renders_cleanly_with_diagnostics_and_version_footer(): void
@@ -20,7 +20,7 @@ class ArchitectureAndHealthCheckTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('AI Psychological CRM');
         $response->assertSee('Diagnostik System');
-        $response->assertSee('Versi: 0.8');
+        $response->assertSee('Versi: 1.0');
         $response->assertSee('MySQL 8.0');
         $response->assertSee('Redis Alpine');
     }

@@ -60,7 +60,7 @@ class MeetingAndMissionTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('Workspace Sesi Pertemuan');
-        $response->assertSee('Versi: 0.8');
+        $response->assertSee('Versi: 1.0');
     }
 
     public function test_user_can_create_new_meeting_via_livewire(): void

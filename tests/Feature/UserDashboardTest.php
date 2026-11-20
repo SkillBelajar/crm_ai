@@ -31,7 +31,7 @@ class UserDashboardTest extends TestCase
         $response->assertRedirect(route('admin.dashboard'));
     }
 
-    public function test_authenticated_user_can_access_dashboard_with_version_0_8(): void
+    public function test_authenticated_user_can_access_dashboard_with_version_1_0(): void
     {
         $user = User::factory()->create([
             'role' => 'user',
@@ -43,7 +43,7 @@ class UserDashboardTest extends TestCase
         $response->assertSee('Pusat Kendali Eksekutif');
         $response->assertSee('Selamat datang, ' . $user->name);
         $response->assertSee('Smart Goal 7 Hari');
-        $response->assertSee('Versi: 0.8');
+        $response->assertSee('Versi: 1.0');
     }
 
     public function test_dashboard_computes_7_day_metrics_and_conversion_rate(): void

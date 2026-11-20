@@ -22,7 +22,7 @@ class AdminAndGuideModuleTest extends TestCase
         $response->assertRedirect('/login');
     }
 
-    public function test_authenticated_user_can_access_guide_with_version_0_8(): void
+    public function test_authenticated_user_can_access_guide_with_version_1_0(): void
     {
         $user = User::factory()->create(['role' => 'user']);
 
@@ -34,7 +34,7 @@ class AdminAndGuideModuleTest extends TestCase
         $response->assertSee('http://213.199.61.184:20130/v1');
         $response->assertSee('Praktik 3 Misi');
         $response->assertSee('Memantau Smart Goal 7 Hari');
-        $response->assertSee('Versi: 0.8');
+        $response->assertSee('Versi: 1.0');
     }
 
     public function test_admin_can_access_guide_and_sees_admin_sop(): void
@@ -90,7 +90,7 @@ class AdminAndGuideModuleTest extends TestCase
         $response = $this->actingAs($admin)->get('/admin');
         $response->assertStatus(200);
         $response->assertSee('Panel Admin SaaS');
-        $response->assertSee('Versi: 0.8');
+        $response->assertSee('Versi: 1.0');
 
         // Test Livewire component data
         Livewire::actingAs($admin)

@@ -6,6 +6,7 @@
         "dev": "vite"
     },
     "devDependencies": {
+        "@rollup/rollup-linux-x64-gnu": "^4.68.7",
         "@tailwindcss/vite": "^4.0.0",
         "alpinejs": "^3.14.8",
         "laravel-vite-plugin": "^2.0.0",

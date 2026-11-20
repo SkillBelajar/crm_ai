@@ -242,7 +242,7 @@
                     {{ $slot }}
                 </div>
 
-                <!-- GLOBAL FOOTER (Versi: 0.3) -->
+                <!-- GLOBAL FOOTER (Versi: 1.0) -->
                 <x-footer />
             </main>
         </div>
