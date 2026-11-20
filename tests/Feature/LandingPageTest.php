@@ -6,7 +6,7 @@ use Tests\TestCase;
 
 class LandingPageTest extends TestCase
 {
-    public function test_landing_page_renders_with_executive_minimalist_sections_and_v0_4(): void
+    public function test_landing_page_renders_with_executive_minimalist_sections_and_v0_5(): void
     {
         $response = $this->get('/');
 
@@ -20,19 +20,19 @@ class LandingPageTest extends TestCase
         $response->assertSee('Kunci Kontrak Psikologis', false);
         $response->assertSee('Keunggulan SaaS Gratis &amp; AI Mandiri (BYOK)', false);
         $response->assertSee('Cara Kerja dalam 3 Langkah Praktis', false);
-        $response->assertSee('Versi: 0.4');
+        $response->assertSee('Versi: 0.5');
     }
 
-    public function test_auth_routes_respond_with_200_and_v0_4(): void
+    public function test_auth_routes_respond_with_200_and_v0_5(): void
     {
         $loginResponse = $this->get('/login');
         $loginResponse->assertStatus(200);
         $loginResponse->assertSee('Masuk ke Akun');
-        $loginResponse->assertSee('Versi: 0.4');
+        $loginResponse->assertSee('Versi: 0.5');
 
         $registerResponse = $this->get('/register');
         $registerResponse->assertStatus(200);
         $registerResponse->assertSee('Daftar Akun Gratis');
-        $registerResponse->assertSee('Versi: 0.4');
+        $registerResponse->assertSee('Versi: 0.5');
     }
 }

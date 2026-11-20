@@ -23,7 +23,7 @@ class AiSettingsAndClientTest extends TestCase
         $response->assertRedirect('/login');
     }
 
-    public function test_authenticated_user_can_access_ai_settings_page_with_version_0_4(): void
+    public function test_authenticated_user_can_access_ai_settings_page_with_version_0_5(): void
     {
         $user = User::create([
             'name' => 'Tester Eksekutif',
@@ -37,7 +37,7 @@ class AiSettingsAndClientTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('Pengaturan AI Mandiri (BYOK)');
-        $response->assertSee('Versi: 0.4');
+        $response->assertSee('Versi: 0.5');
         $response->assertSee('Base URL Endpoint');
         $response->assertSee('Test Koneksi AI');
         $response->assertSee('Simpan Pengaturan');

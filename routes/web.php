@@ -3,6 +3,8 @@
 use App\Livewire\AiSettingsForm;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
+use App\Livewire\ContactIndex;
+use App\Livewire\ContactShow;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -51,10 +53,9 @@ Route::middleware('auth')->group(function () {
         return view('dashboard');
     })->name('dashboard');
 
-    // Placeholders for subsequent slices
-    Route::get('/contacts', function () {
-        return view('placeholders.contacts');
-    })->name('contacts');
+    // CRM Contacts Module (Slice 5)
+    Route::get('/contacts', ContactIndex::class)->name('contacts');
+    Route::get('/contacts/{contact}', ContactShow::class)->name('contacts.show');
 
     Route::get('/meetings', function () {
         return view('placeholders.meetings');

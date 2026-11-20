@@ -5,7 +5,7 @@
 [![Livewire 3](https://img.shields.io/badge/Livewire-3-FB70A9?style=flat&logo=livewire)](https://livewire.laravel.com)
 [![Tailwind CSS v4](https://img.shields.io/badge/TailwindCSS-v4-06B6D4?style=flat&logo=tailwindcss)](https://tailwindcss.com)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat&logo=docker)](https://docker.com)
-[![Version](https://img.shields.io/badge/Version-0.4-emerald)](https://github.com/SkillBelajar/crm_ai)
+[![Version](https://img.shields.io/badge/Version-0.5-emerald)](https://github.com/SkillBelajar/crm_ai)
 
 SaaS Gratis dengan arsitektur **BYOK (Bring Your Own Key) Custom AI Endpoint**. Dirancang khusus untuk mengendalikan dinamika percakapan prospek melalui 3 misi psikologis strategis dengan performa worker Laravel Octane (FrankenPHP) dan UI reaktif Livewire 3 + Alpine.js.
 
@@ -80,7 +80,7 @@ docker compose exec app php artisan test
 - [x] **Slice 2 (v0.2):** Modul Landing Page Executive Minimalist, Dark/Light Mode, Responsif Mobile, BYOK, Diagnostik System Health.
 - [x] **Slice 3 (v0.3):** Modul Autentikasi (Livewire 3), Multi-Tenancy / RBAC (`admin`/`user`), Session Driver Redis, Dashboard Eksekutif & Admin Panel.
 - [x] **Slice 4 (v0.4):** Modul Pengaturan AI Mandiri (BYOK) Livewire 3 & AI Client Service (OpenAI-compatible) dengan Enkripsi Kunci AES-256.
-- [ ] **Slice 5 (v0.5):** Pipeline & Prospek Management.
+- [x] **Slice 5 (v0.5):** Modul Manajemen Kontak (CRM) & Profil Psikologis (Tabel `contacts`, Isolasi Multi-Tenant per-User, Livewire 3 Debounced Real-time Search, Kategori, 1 Kebutuhan Psikologis Terbesar & Pemicu Validasi Ego).
 - [ ] **Slice 6 (v0.6):** Active Elicitation Logger & Misi 1.
 - [ ] **Slice 7 (v0.7):** AI Anti-Lilin Engine & Conditional Yes.
 - [ ] **Slice 8 (v0.8):** 24-Hour Psychological Lock & Evaluasi 7 Hari.
