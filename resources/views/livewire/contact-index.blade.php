@@ -296,15 +296,15 @@
 
     <!-- MODAL CREATE / EDIT KONTAK -->
     @if ($showModal)
-        <div class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                <!-- Backdrop -->
-                <div wire:click="closeModal" class="fixed inset-0 bg-zinc-950/70 backdrop-blur-xs transition-opacity" aria-hidden="true"></div>
+        <div class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+            <!-- Backdrop -->
+            <div wire:click="closeModal" class="fixed inset-0 bg-zinc-950/75 backdrop-blur-xs transition-opacity"></div>
 
-                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-
-                <!-- Modal Panel -->
-                <div class="inline-block align-bottom bg-white dark:bg-zinc-900 rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-xl sm:w-full border border-zinc-200 dark:border-zinc-800">
+            <!-- Scrollable & Centering Container -->
+            <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+                <div wire:click.self="closeModal" class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+                    <!-- Modal Panel -->
+                    <div class="relative w-full sm:max-w-xl bg-white dark:bg-zinc-900 rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 border border-zinc-200 dark:border-zinc-800">
                     <!-- Modal Header -->
                     <div class="p-6 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
                         <div class="flex items-center space-x-3">
@@ -479,13 +479,15 @@
 
     <!-- MODAL DELETE CONFIRMATION -->
     @if ($showDeleteModal)
-        <div class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-delete" role="dialog" aria-modal="true">
-            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                <div wire:click="cancelDelete" class="fixed inset-0 bg-zinc-950/70 backdrop-blur-xs transition-opacity" aria-hidden="true"></div>
+        <div class="relative z-50" aria-labelledby="modal-delete" role="dialog" aria-modal="true">
+            <!-- Backdrop -->
+            <div wire:click="cancelDelete" class="fixed inset-0 bg-zinc-950/75 backdrop-blur-xs transition-opacity"></div>
 
-                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-
-                <div class="inline-block align-bottom bg-white dark:bg-zinc-900 rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-md sm:w-full border border-zinc-200 dark:border-zinc-800 p-6">
+            <!-- Scrollable & Centering Container -->
+            <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+                <div wire:click.self="cancelDelete" class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+                    <!-- Modal Panel -->
+                    <div class="relative w-full sm:max-w-md bg-white dark:bg-zinc-900 rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 border border-zinc-200 dark:border-zinc-800 p-6">
                     <div class="flex items-start space-x-4">
                         <div class="w-10 h-10 rounded-xl bg-rose-500/10 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 flex items-center justify-center shrink-0">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

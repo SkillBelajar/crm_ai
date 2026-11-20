@@ -241,13 +241,15 @@
 
     <!-- MODAL EDIT PROFILE KONTAK -->
     @if ($showEditModal)
-        <div class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-edit-title" role="dialog" aria-modal="true">
-            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                <div wire:click="closeEditModal" class="fixed inset-0 bg-zinc-950/70 backdrop-blur-xs transition-opacity" aria-hidden="true"></div>
+        <div class="relative z-50" aria-labelledby="modal-edit-title" role="dialog" aria-modal="true">
+            <!-- Backdrop -->
+            <div wire:click="closeEditModal" class="fixed inset-0 bg-zinc-950/75 backdrop-blur-xs transition-opacity"></div>
 
-                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-
-                <div class="inline-block align-bottom bg-white dark:bg-zinc-900 rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-xl sm:w-full border border-zinc-200 dark:border-zinc-800">
+            <!-- Scrollable & Centering Container -->
+            <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+                <div wire:click.self="closeEditModal" class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+                    <!-- Modal Panel -->
+                    <div class="relative w-full sm:max-w-xl bg-white dark:bg-zinc-900 rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 border border-zinc-200 dark:border-zinc-800">
                     <div class="p-6 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
                         <div class="flex items-center space-x-3">
                             <div class="w-9 h-9 rounded-xl bg-indigo-500/10 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold">
