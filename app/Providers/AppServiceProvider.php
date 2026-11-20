@@ -20,6 +20,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Set default locale Carbon to Indonesian
+        \Carbon\Carbon::setLocale('id');
+
         // Strictly prohibit destructive database commands in production (excluding test runs)
         if ($this->app->isProduction() && ! $this->app->runningUnitTests()) {
             DB::prohibitDestructiveCommands(true);

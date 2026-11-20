@@ -14,15 +14,19 @@
 
         <!-- Quick Links -->
         <div class="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 font-medium">
-            <a href="#misi" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">Konsep 3 Misi</a>
-            <a href="#byok" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">Keunggulan BYOK AI</a>
-            <a href="#cara-kerja" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">Cara Kerja</a>
+            <a href="/guide" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">Panduan SOP</a>
             <a href="/system-health" class="hover:text-emerald-600 dark:hover:text-emerald-400 transition flex items-center gap-1.5">
                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
                 Diagnostik Sistem
             </a>
-            <a href="/login" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">Masuk</a>
-            <a href="/register" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">Mulai Gratis</a>
+            @guest
+                <a href="/login" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">Masuk</a>
+                <a href="/register" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">Mulai Gratis</a>
+            @else
+                <a href="/dashboard" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">Dashboard</a>
+                <a href="/meetings" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">Workspace</a>
+                <a href="/contacts" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">Kontak</a>
+            @endguest
         </div>
 
         <!-- Version & Copyright -->

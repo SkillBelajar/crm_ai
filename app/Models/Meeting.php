@@ -134,26 +134,37 @@ class Meeting extends Model
             ];
         }
 
-        if (now()->gt($this->contract_deadline_at)) {
-            $diff = now()->diffForHumans($this->contract_deadline_at, ['syntax' => CarbonInterface::DIFF_ABSOLUTE, 'parts' => 1]);
+        $now = now();
+        $isOverdue = $now->gt($this->contract_deadline_at);
+        $totalMinutes = abs((int) $now->diffInMinutes($this->contract_deadline_at));
+
+        if ($totalMinutes < 60) {
+            $diffText = "{$totalMinutes} menit";
+        } elseif ($totalMinutes < 1440) {
+            $hours = round($totalMinutes / 60);
+            $diffText = "{$hours} jam";
+        } else {
+            $days = round($totalMinutes / 1440);
+            $diffText = "{$days} hari";
+        }
+
+        if ($isOverdue) {
             return [
                 'status' => 'expired',
-                'label' => "Lewat {$diff}",
+                'label' => "Lewat {$diffText}",
                 'badge' => 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20',
                 'is_overdue' => true,
             ];
         }
 
-        $remainingHours = now()->diffInHours($this->contract_deadline_at);
-        $diff = now()->diffForHumans($this->contract_deadline_at, ['syntax' => CarbonInterface::DIFF_ABSOLUTE, 'parts' => 1]);
-
+        $remainingHours = $now->diffInHours($this->contract_deadline_at);
         $badge = $remainingHours <= 6
             ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20'
             : 'bg-zinc-500/10 text-zinc-600 dark:text-zinc-400 border-zinc-500/20';
 
         return [
             'status' => 'active',
-            'label' => "Sisa {$diff}",
+            'label' => "Sisa {$diffText}",
             'badge' => $badge,
             'is_overdue' => false,
         ];
